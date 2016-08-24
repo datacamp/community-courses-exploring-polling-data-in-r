@@ -22,7 +22,7 @@ Have a look at the plot. Which candidate appears to be leading?
 *** =pre_exercise_code
 ```{r}
 
-polls <- read.csv("polls.csv")
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
 polls$polldate <- as.Date(polls$polldate)
 polls$electiondate <- as.Date(polls$electiondate)
 library(ggplot2)
