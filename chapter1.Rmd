@@ -9,7 +9,7 @@ attachments :
 
 The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether or not an individual will actually vote).
 
-Most importantly, even the best polls are just an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you for sure how someone will behave in the voting booth.
+Even the best polls are just an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you exactly how someone will behave in the voting booth.
 
 The plot on the right shows the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
@@ -47,7 +47,7 @@ ggplot(data=subset(polls, type=="rep")) +
 *** =sct
 ```{r}
 
-msg_bad <- "That's not correct! It may be true, but we can't tell fom these polls."
+msg_bad <- "That's not correct! It may be true, but we can't tell from these polls."
 msg_success <- "Exactly! Donald Trump has a lead in most of these polls, but that doesn't mean he'll win every state."
 test_mc(correct = 2, feedback_msgs = c(msg_bad, msg_success, msg_bad, msg_bad))
 ```
@@ -82,21 +82,22 @@ polls$electiondate <- as.Date(polls$electiondate)
 
 *** =sample_code
 ```{r}
-# `polls` is available in your workspace
+# polls is available in your workspace
 
 # Check out the structure of polls
+
 
 # Select polls for the Democratic primaries only: dem_polls
 dem_polls <- 
 
-# Using `dem_polls`, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+# Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 plot(___, ___, col= ___)
   
 ```
 
 *** =solution
 ```{r}
-# `polls` is available in your workspace
+# polls is available in your workspace
 
 # Check out the structure of polls
 str(polls)
@@ -104,7 +105,7 @@ str(polls)
 # Select polls for the Democratic primaries only: dem_polls
 dem_polls <- polls[polls$type == "dem", ]
 
-# Using `dem_polls`, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+# Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 plot(dem_polls$polldate, dem_polls$percent, col = dem_polls$candidate)
 ```
 
@@ -124,7 +125,7 @@ test_function("plot", args = "col")
 
 test_error()
 
-success_msg("Great work! Your polling data are accompanied by information about the poll operator (`pollster`) and sample size. That plot looks a little messy. In the next exercise, you'll use the `ggplot` package to produce a more intuitive plot.")
+success_msg("Great work! Your polling data are accompanied by information about the poll operator (`pollster`) and sample size. That plot looks a little messy. In the next exercise, you'll use the `ggplot2` package to produce a more intuitive plot.")
 ```
 
 
@@ -134,12 +135,12 @@ success_msg("Great work! Your polling data are accompanied by information about 
 --- type:NormalExercise lang:r xp:100 skills:1 key:b29b654048
 ## Visualizing polling trends
 
-Your previous plot of Democratic primary polls was difficult to interpret because it didn't show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on high quality visualizations. In this exercise, you'll use the `ggplot2` package to produce a more intuitive plot of Democratic primary polls.
+Your previous plot of Democratic primary polls was difficult to interpret because it didn't show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on crisp and clear visualizations. In this exercise, you'll use the `ggplot2` package to produce a more intuitive plot of Democratic primary polls.
 
 In this exercise, you'll return to the complete dataset of all polls (`polls`), which is preloaded in your workspace.
 
 *** =instructions
-- Recreate your previous plot using the ``ggplot2` package. Select only data from Democratic primaries (this time using `subset()`). Plot `polldate` on the x-axis, `percent` on the y-axis, and set color to `candidate`. Store your plot as `dem_plot`.
+- Recreate your previous plot using the `ggplot2` package. Select only data from Democratic primaries (this time using `subset()`). Plot `percent` on the y-axis, `polldate` on the x-axis, and set color to `candidate`. Store your plot as `dem_plot`.
 - View your new plot
 - Add a trend line to `dem_plot` using `geom_smooth`. Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
 
@@ -161,16 +162,16 @@ polls$electiondate <- as.Date(polls$electiondate)
 # Load the ggplot2 package
 library(ggplot2)
 
-# Create a plot of Democratic candidate support (`percent`) over time (`polldate`), setting color to `candidate`
+# Create a plot of Democratic candidate support (percent) over time (polldate), setting color to candidate
 dem_plot <- ggplot(data = subset(polls, polls$type == "___"), aes(y = ___, x = ___, col = ___)) + 
   geom_point(alpha = 0.5) 
 
 # View your new plot
 dem_plot
 
-# Add a trend line for each candidate using `geom_smooth()`
+# Add a trend line for each candidate using geom_smooth()
 dem_plot + 
-
+  geom_smooth(___)
 ```
 
 *** =solution
@@ -178,14 +179,14 @@ dem_plot +
 # Load the ggplot2 package
 library(ggplot2)
 
-# Create a plot of Democratic candidate support (`percent`) over time (`polldate`), setting color to `candidate`
+# Create a plot of Democratic candidate support (percent) over time (polldate), setting color to candidate
 dem_plot <- ggplot(data = subset(polls, polls$type == "dem"), aes(y = percent, x = polldate, col = candidate)) + 
   geom_point(alpha = 0.5) 
 
 # View your new plot
 dem_plot
 
-# Add a trend line for each candidate using `geom_smooth()`
+# Add a trend line for each candidate using geom_smooth()
 dem_plot + 
   geom_smooth(span = 0.5, se = FALSE) 
   
@@ -197,13 +198,16 @@ dem_plot +
 
 test_function("ggplot", args = "object",
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(data = ...., aes(...))` with the correct arguments")
+              incorrect_msg = "You didn't call `ggplot(object = ...)` with the correct argument, `object`.")
 
 test_object("dem_plot")
 
 test_function("ggplot", args = "x")
 test_function("ggplot", args = "y")
 test_function("ggplot", args = "col")
+
+test_function("geom_smooth", args = "span")
+test_function("geom_smooth", args = "se")
 
 test_error()
 
