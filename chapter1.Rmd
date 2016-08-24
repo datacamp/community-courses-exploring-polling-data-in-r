@@ -9,16 +9,18 @@ attachments :
 
 The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether or not an individual will actually vote).
 
-The data in the plot on the right show the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
+Most importantly, even the best polls are just an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you for sure how someone will behave in the voting booth.
+
+The plot on the right shows the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
 *** =instructions
 - Ted Cruz is unlikely to win a single state.
 - Donald Trump is generally the most popular candidate, but may lag behind other candidates in certain states.
 - Donald Trump is guaranteed to win the Republican nomination.
-- Donald Trump will likely win the General Election against the Democratic candidate in November.
+- Donald Trump will likely win the general election against the Democratic candidate in November.
 
 *** =hint
-Have a look at the plot. Which candidate appears to be leading? What can these data tell us about voting outcomes?
+Take a look at the plot. Which candidate appears to be leading? What can these data tell us about voting outcomes?
 
 
 *** =pre_exercise_code
@@ -31,7 +33,7 @@ library(ggplot2)
 library(scales)
 
 ggplot(data=subset(polls, type=="rep")) + 
-  geom_point(aes(y=percent, x=polldate, col=candidate), alpha=0.3, na.rm=TRUE) + 
+  geom_jitter(aes(y=percent, x=polldate, col=candidate), alpha=0.3, na.rm=TRUE) + 
   geom_smooth(aes(y=percent, x=polldate, col=candidate), span=0.5, se=FALSE, alpha=0.7, na.rm=TRUE) + 
   scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b %Y")) + 
   scale_y_continuous(breaks = c(0, 20, 40, 60)) +
@@ -44,7 +46,6 @@ ggplot(data=subset(polls, type=="rep")) +
 
 *** =sct
 ```{r}
-# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
 msg_bad <- "That's not correct! It may be true, but we can't tell fom these polls."
 msg_success <- "Exactly! Donald Trump has a lead in most of these polls, but that doesn't mean he'll win every state."
@@ -71,6 +72,10 @@ A dataset with complete primary polling data, `polls`, is available in the works
 
 *** =pre_exercise_code
 ```{r}
+
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
 
 
 ```
@@ -145,6 +150,9 @@ In this exercise, you'll return to the complete dataset of all polls (`polls`), 
 
 *** =pre_exercise_code
 ```{r}
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
 
 ```
 
@@ -225,6 +233,9 @@ In this exercise, you'll search your polling data for unrepresentative polls and
 
 *** =pre_exercise_code
 ```{r}
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
 
 breaks <- seq.int(0, 1300, 100)
 
@@ -297,6 +308,11 @@ To view both plots at once, you'll need to use the `grid.arrange()` command from
 
 *** =pre_exercise_code
 ```{r}
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
+
+polls2 <- polls[polls$samplesize > 400, ]
 
 library(ggplot2)
 library(gridExtra)
@@ -380,6 +396,11 @@ In this exercise, you'll compare polling numbers in the Republican primary acros
 
 *** =pre_exercise_code
 ```{r}
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
+
+polls2 <- polls[polls$samplesize > 400, ]
 
 library(ggplot2)
 library(gridExtra)
@@ -480,6 +501,25 @@ Have a look at the plots. Which candidate appears to be leading in each state? W
 
 *** =pre_exercise_code
 ```{r}
+polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
+
+polls2 <- polls[polls$samplesize > 400, ]
+ia_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "IA"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="Iowa")
+
+nh_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "NH"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="New Hampshire")
+
+sc_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "SC"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="South Carolina")
 
 grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 
