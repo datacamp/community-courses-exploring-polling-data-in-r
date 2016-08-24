@@ -196,9 +196,10 @@ dem_plot +
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "object",
-              not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(object = ...)` with the correct argument, `object`.")
+test_function("ggplot", args = "data",
+              not_called_msg = "Make sure to call `ggplot()`",
+              args_not_specified_msg = "Have you specified the argument `data` in `ggplot`?",
+              incorrect_msg = "Have you correctly specified the argument `data` in `ggplot`?")
 
 test_object("dem_plot")
 
@@ -248,12 +249,12 @@ breaks <- seq.int(0, 1300, 100)
 
 *** =sample_code
 ```{r}
-# Summarize the `samplesize` variable in `polls`
+# Summarize samplesize (contained in the polls data frame)
 summary(___)
 
-# Create a histogram showing the distribution of polls with a `samplesize` below 1000. Use the vector `breaks` for your histogram breaks.
+# Create a histogram showing the distribution of polls with a sample size below 1000. Use the vector `breaks` for your histogram breaks.
 
-# Create a new object that contains only polls with a sample size greater than 400: polls2
+# Create a new data frame that contains only polls with a sample size greater than 400: polls2
 polls2 <-
 
 
@@ -261,13 +262,13 @@ polls2 <-
 
 *** =solution
 ```{r}
-# Summarize the `samplesize` variable in `polls`
+# Summarize samplesize (contained in the polls data frame)
 summary(polls$samplesize)
 
-# Create a histogram showing the distribution of polls with a `samplesize` below 1000. Use the vector `breaks` for your histogram breaks.
+# Create a histogram showing the distribution of polls with a sample size below 1000. Use the vector `breaks` for your histogram breaks.
 hist(polls$samplesize[polls$samplesize < 1000], breaks)
 
-# Create a new object that contains only polls with a sample size greater than 400: polls2
+# Create a new data frame that contains only polls with a sample size greater than 400: polls2
 polls2 <- polls[polls$samplesize > 400, ]
 
 
@@ -277,9 +278,6 @@ polls2 <- polls[polls$samplesize > 400, ]
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("hist", args = "object",
-              not_called_msg = "You didn't call `hist()`!",
-              incorrect_msg = "You didn't call `hist(....)` with the correct argument")
 
 test_object("polls2")
 
@@ -294,14 +292,14 @@ success_msg("Well done! You've removed a key source of inaccuracy in your data. 
 --- type:NormalExercise lang:r xp:100 skills:1, 3 key:ede1dd57e1
 ## Visualizing the refined data
 
-Now that you've refined your polling data, you are ready to produce more accurate visualizations. In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
+Now that you've refined your polling data, you're ready to produce more accurate plots In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
 
 To view both plots at once, you'll need to use the `grid.arrange()` command from the `gridExtra` package. This command creates a grid which you can fill with plot objects.
 
-`polls2` is available in your workspace. ``ggplot2`` and `gridExtra` have been preloaded. 
+`polls2` is available in your workspace and ``ggplot2`` and `gridExtra` have been preloaded. 
 
 *** =instructions
-- Recreate your plot of the Democratic polling data using `polls2`. Save this plot as `dem_plot2`.
+- Recreate your plot of the Democratic polling data using `polls2`. Save this plot as `dem_plot2`. Remember to use `subset` and `type == "dem"`.
 - Create a similar plot using the Republican polling data contained in `polls2`. Save this plot as `rep_plot2`.
 - View both plots together using `grid.arrange()`.
 
@@ -328,8 +326,8 @@ library(gridExtra)
 ```{r}
 # Recreate your plot of the Demcoratic polling data using polls2: dem_plot2
 dem_plot2 <- ggplot(data = subset(___), aes(y = ___, x = ___, col = ___)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(span = 0.5, se = FALSE)
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.5, se = FALSE, na.rm = TRUE)
 
 # Create a similar plot for the Republican primaries: rep_plot2
 rep_plot2 <- 
@@ -344,8 +342,8 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 ```{r}
 # Recreate your plot of the Demcoratic polling data using polls2: dem_plot2
 dem_plot2 <- ggplot(data = subset(polls2, polls2$type == "dem"), aes(y = percent, x = polldate, col = candidate)) +
-  geom_point(alpha = 0.5) +
-  geom_smooth(span = 0.5, se = FALSE)
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.5, se = FALSE, na.rm = TRUE)
 
 # Create a similar plot for the Republican primaries: rep_plot2
 rep_plot2 <- ggplot(data = subset(polls2, polls2$type == "rep"), aes(y = percent, x = polldate, col = candidate)) +
@@ -362,9 +360,9 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "object",
+test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
 
 test_object("dem_plot2")
 
@@ -379,15 +377,15 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 --- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
 ## The Fifty-State Strategy
 
-Your plots look great! Now it's time to take a closer look at your polling data. Did you notice the polls are done at the state level? Rather than averaging across all the states, it might make sense to view polling data state-by-state, especially for the primaries.
+Your plots look great! Now it's time to take a closer look at your polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus their effort on winning individual states, rather than maintaining popularity across the country. Rather than averaging across all the states, it might make sense to view polling data state-by-state.
 
 In this exercise, you'll compare polling numbers in the Republican primary across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
 
-`polls2`as well as the ``ggplot2` and `gridExtra` package are preloaded into your workspace.
+`polls2`as well as the `ggplot2` and `gridExtra` packages are preloaded into your workspace.
 
 
 *** =instructions
-- Create a plot using `ggplot()` that includes only polling data for Republicans (`type == "rep"`) in the state of Iowa (`location == "IA"`). Save this plot to `ia_plot`.
+- Create a plot using `ggplot()` that includes only polling data for Republicans (`type == "rep"`) in the state of Iowa (`location == "IA"`) drawn from the `polls2` data. Save this plot to `ia_plot`.
 - Create a second plot that includes only polling data for Republicans in New Hampshire (`location == "NH"`). Save this plot to `nh_plot`.
 - Create a third plot that includes only polling data for Republicans in South Carolina (`location == "SC"`). Save this plot to `sc_plot`.
 - Take a look at all three plots together using `grid.arrange()`.
@@ -480,7 +478,7 @@ test_object("sc_plot")
 
 test_error()
 
-success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump had large leads in New Hampshire and South Carolina.")
+success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump had large leads in both New Hampshire and South Carolina.")
 ```
 
 
@@ -505,6 +503,9 @@ Have a look at the plots. Which candidate appears to be leading in each state? W
 
 *** =pre_exercise_code
 ```{r}
+library(ggplot2)
+library(gridExtra)
+
 polls <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/polls.csv")
 polls$polldate <- as.Date(polls$polldate)
 polls$electiondate <- as.Date(polls$electiondate)
