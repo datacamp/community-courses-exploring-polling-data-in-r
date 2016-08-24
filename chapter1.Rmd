@@ -460,5 +460,39 @@ success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump ha
 
 
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:9245d968f0
+## Stronger Predictions
+
+Now that you've succesfully explored these polling data, you should have a better idea how to read, refine, and visualize large numbers of polls across different units (in this case, states).
+
+Based on your new knowledge of polls, which of the following conclusions can you make from the plots you made in the previous exercise?
+
+
+*** =instructions
+- There is a 100% chance that Donald Trump will win New Hampshire.
+- There was never a chance of Marco Rubio winning in South Carolina.
+- John Kasich will not win in New Hampshire.
+- We can't be sure who will win in Iowa based on these polls.
+
+*** =hint
+Have a look at the plots. Which candidate appears to be leading? What can these data tell us about voting outcomes?
+
+
+*** =pre_exercise_code
+```{r}
+
+grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+msg_bad <- "That's not quite right. Polls alone can't provide that information and even the best polls are just estimates based on public opinion."
+msg_success <- "Great job! Remember, even the strongest polls are limited."
+test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
+```
+
 
 
