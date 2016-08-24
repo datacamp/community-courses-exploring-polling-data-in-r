@@ -4,19 +4,21 @@ description : Polling data can be an incredibly valuable tool for understanding 
 attachments :
   slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:9245d968f0
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
 ## Reading the polls
 
-The first step in working with polling data is understanding what types of conclusions we can derive from the polls. The data in the plot on the right show the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
+The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether or not an individual will actually vote).
+
+The data in the plot on the right show the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
 *** =instructions
 - Ted Cruz is unlikely to win a single state.
-- Donald Trump is the most popular candidate nationwide, but may lag behind other candidates in certain states.
-- Donald Trump is likely to win all 50 states.
-- Donald Trump will likely win the General Election against Hillary Clinton in November.
+- Donald Trump is generally the most popular candidate, but may lag behind other candidates in certain states.
+- Donald Trump is guaranteed to win the Republican nomination.
+- Donald Trump will likely win the General Election against the Democratic candidate in November.
 
 *** =hint
-Have a look at the plot. Which candidate appears to be leading?
+Have a look at the plot. Which candidate appears to be leading? What can these data tell us about voting outcomes?
 
 
 *** =pre_exercise_code
@@ -28,12 +30,15 @@ polls$electiondate <- as.Date(polls$electiondate)
 library(ggplot2)
 library(scales)
 
-ggplot(data=subset(polls, type_detail=="Pres-R")) + 
-  geom_jitter(aes(y=percent, x=polldate, col=candidate), alpha=0.3, na.rm=TRUE) + 
+ggplot(data=subset(polls, type=="rep")) + 
+  geom_point(aes(y=percent, x=polldate, col=candidate), alpha=0.3, na.rm=TRUE) + 
   geom_smooth(aes(y=percent, x=polldate, col=candidate), span=0.5, se=FALSE, alpha=0.7, na.rm=TRUE) + 
   scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b %Y")) + 
   scale_y_continuous(breaks = c(0, 20, 40, 60)) +
-  labs(x="Poll Date", y="")
+  labs(x="Poll Date", y="") +
+  scale_colour_discrete(breaks=c("trump", "cruz", "kasich", "rubio"), 
+                        labels=c("Donald Trump","Ted Cruz", "John Kasich","Marco Rubio")) +
+  theme(legend.position="top", legend.title=element_blank())
 
 ```
 
@@ -41,23 +46,22 @@ ggplot(data=subset(polls, type_detail=="Pres-R")) +
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-msg_bad <- "That is not correct!"
-msg_success <- "Exactly! Donald Trump maintains a lead throughout these polls, but that doesn't mean he'll win every state."
+msg_bad <- "That's not correct! It may be true, but we can't tell fom these polls."
+msg_success <- "Exactly! Donald Trump has a lead in most of these polls, but that doesn't mean he'll win every state."
 test_mc(correct = 2, feedback_msgs = c(msg_bad, msg_success, msg_bad, msg_bad))
 ```
 
---- type:NormalExercise lang:r xp:100 skills:1 key:c03ca11be3
+--- type:NormalExercise lang:r xp:100 skills:1, 3
 ## Looking under the hood
 
-In the previous exercise, you saw a dataset of polling within the 2016 Republican primaries from January through May of 2016. In this ecercise, we'll take a look at a larger dataset containing polls for Republican and Democratic primaries.
+In the previous exercise, you viewed polling data from the 2016 Republican primaries. In this exercise, you'll take a look at a larger dataset containing polls from both the Republican and Democratic primaries. 
 
-
-A dataset with complete polling data, `polls`, is available in the workspace.
+A dataset with complete primary polling data, `polls`, is available in the workspace.
 
 *** =instructions
 - Take a look at the structure of `polls`.
-- Select polls for Hillary Clinton in the Democratic primary  (`candidate == "dem`). Assign these polls to `dem_polls`.
-- Use `plot()` to plot `dem_polls$percent` on the x-axis, `dem_polls$polldate` on the y-axis, and set `col` to `dem_polls#candidate`.
+- Select polls for the Democratic primaries only (`type == "dem`). Assign these polls to `dem_polls`.
+- Use R's baseline plot function, `plot()`, to plot candidate support (`dem_polls$percent`) on the x-axis, the date of the poll (`dem_polls$polldate`) on the y-axis, and give each candidate (`dem_polls#candidate`) their own color.
 
 
 *** =hint
@@ -67,43 +71,35 @@ A dataset with complete polling data, `polls`, is available in the workspace.
 
 *** =pre_exercise_code
 ```{r}
-# You can also prepare your dataset in a specific way in the pre exercise code
 
-polls <- read.csv("polls.csv")
-polls$polldate <- as.Date(polls$polldate)
-polls$electiondate <- as.Date(polls$electiondate)
-
-
-
-# Clean up the environment
 
 ```
 
 *** =sample_code
 ```{r}
-# polls is available in your workspace
+# `polls` is available in your workspace
 
 # Check out the structure of polls
 
-
 # Select polls for the Democratic primaries only: dem_polls
+dem_polls <- 
 
-
-# Plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
-
+# Using `dem_polls`, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+plot(___, ___, col= ___)
+  
 ```
 
 *** =solution
 ```{r}
-# movie_selection is available in your workspace
+# `polls` is available in your workspace
 
-# Check out the structure of movie_selection
+# Check out the structure of polls
 str(polls)
 
-# Select movies that have a rating of 5 or higher: good_movies
+# Select polls for the Democratic primaries only: dem_polls
 dem_polls <- polls[polls$type == "dem", ]
 
-# Plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+# Using `dem_polls`, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 plot(dem_polls$polldate, dem_polls$percent, col = dem_polls$candidate)
 ```
 
@@ -123,5 +119,346 @@ test_function("plot", args = "col")
 
 test_error()
 
-success_msg("Great work! But that plot looks a little messy. In the next exercise, we'll use `ggplot` to produce a more intuitive plot.")
+success_msg("Great work! Your polling data are accompanied by information about the poll operator (`pollster`) and sample size. That plot looks a little messy. In the next exercise, you'll use the `ggplot` package to produce a more intuitive plot.")
 ```
+
+
+
+
+
+--- type:NormalExercise lang:r xp:100 skills:1
+## Visualizing polling trends
+
+Your previous plot of Democratic primary polls was difficult to interpret because it didn't show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on high quality visualizations. In this exercise, you'll use the `ggplot2` package to produce a more intuitive plot of Democratic primary polls.
+
+In this exercise, you'll return to the complete dataset of all polls (`polls`), which is preloaded in your workspace.
+
+*** =instructions
+- Recreate your previous plot using the ``ggplot2` package. Select only data from Democratic primaries (this time using `subset()`). Plot `polldate` on the x-axis, `percent` on the y-axis, and set color to `candidate`. Store your plot as `dem_plot`.
+- View your new plot
+- Add a trend line to `dem_plot` using `geom_smooth`. Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
+
+
+*** =hint
+- Use `subset(polls, polls$type == "dem")` to select only Democratic primaries
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+
+*** =pre_exercise_code
+```{r}
+
+```
+
+*** =sample_code
+```{r}
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a plot of Democratic candidate support (`percent`) over time (`polldate`), setting color to `candidate`
+dem_plot <- ggplot(data = subset(polls, polls$type == "___"), aes(y = ___, x = ___, col = ___)) + 
+  geom_point(alpha = 0.5) 
+
+# View your new plot
+dem_plot
+
+# Add a trend line for each candidate using `geom_smooth()`
+dem_plot + 
+
+```
+
+*** =solution
+```{r}
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a plot of Democratic candidate support (`percent`) over time (`polldate`), setting color to `candidate`
+dem_plot <- ggplot(data = subset(polls, polls$type == "dem"), aes(y = percent, x = polldate, col = candidate)) + 
+  geom_point(alpha = 0.5) 
+
+# View your new plot
+dem_plot
+
+# Add a trend line for each candidate using `geom_smooth()`
+dem_plot + 
+  geom_smooth(span = 0.5, se = FALSE) 
+  
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("ggplot", args = "object",
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(data = ...., aes(...))` with the correct arguments")
+
+test_object("dem_plot")
+
+test_function("ggplot", args = "x")
+test_function("ggplot", args = "y")
+test_function("ggplot", args = "col")
+
+test_error()
+
+success_msg("Excellent! Your new plot of Democratic primary polls is crisp and easy to understand.")
+```
+
+
+
+--- type:NormalExercise lang:r xp:100 skills:1, 3
+## Improving poll data quality
+
+You just made a great plot showing support for Hillary Clinton and Bernie Sanders over the course of the 2016 Democratic primaries. Before you draw any conclusions from this plot, you'll want to address issues of data quality. Even the best polls can suffer from inaccuracy caused by low sample size or pollster bias. 
+
+In this exercise, you'll search your polling data for unrepresentative polls and refine your dataset to contain only the most accurate polls.
+
+`polls` is available in your workspace. 
+
+*** =instructions
+- One common source of inaccuracy in polls is low sample size. Take a look at sample sizes across your data using `summary()`.
+- Generate a histogram showing the distribution of polls where `samplesize` is less than 1000. A vector of breaks for your histogram (`breaks`) has been prepared for you.
+- Create a new data frame that contains only polls with a sample size greater than 400. Save this as `polls2`.
+
+*** =hint
+- Specify the sample size variable within your `polls` data frame using `polls$samplesize`
+- Include only a subset of your data using `polls[polls$samplesize > ..., ]`
+
+
+*** =pre_exercise_code
+```{r}
+
+breaks <- seq.int(0, 1300, 100)
+
+```
+
+
+*** =sample_code
+```{r}
+# Summarize the `samplesize` variable in `polls`
+summary(___)
+
+# Create a histogram showing the distribution of polls with a `samplesize` below 1000. Use the vector `breaks` for your histogram breaks.
+
+# Create a new object that contains only polls with a sample size greater than 400: polls2
+polls2 <-
+
+
+```
+
+*** =solution
+```{r}
+# Summarize the `samplesize` variable in `polls`
+summary(polls$samplesize)
+
+# Create a histogram showing the distribution of polls with a `samplesize` below 1000. Use the vector `breaks` for your histogram breaks.
+hist(polls$samplesize[polls$samplesize < 1000], breaks)
+
+# Create a new object that contains only polls with a sample size greater than 400: polls2
+polls2 <- polls[polls$samplesize > 400, ]
+
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("hist", args = "object",
+              not_called_msg = "You didn't call `hist()`!",
+              incorrect_msg = "You didn't call `hist(....)` with the correct argument")
+
+test_object("polls2")
+
+test_error()
+
+success_msg("Well done! You've removed a key source of inaccuracy in your data. With these refined data, you are ready to produce more accurate plots.")
+```
+
+
+
+
+--- type:NormalExercise lang:r xp:100 skills:1, 3
+## Visualizing the refined data
+
+Now that you've refined your polling data, you are ready to produce more accurate visualizations. In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
+
+To view both plots at once, you'll need to use the `grid.arrange()` command from the `gridExtra` package. This command creates a grid which you can fill with plot objects.
+
+`polls2` is available in your workspace. ``ggplot2`` and `gridExtra` have been preloaded. 
+
+*** =instructions
+- Recreate your plot of the Democratic polling data using `polls2`. Save this plot as `dem_plot2`.
+- Create a similar plot using the Republican polling data contained in `polls2`. Save this plot as `rep_plot2`.
+- View both plots together using `grid.arrange()`.
+
+*** =hint
+- Use `subset(polls2, polls2$type == "dem")` to select only Democratic primaries. Use a similar command for Republican primaries (`rep`).
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+
+
+*** =pre_exercise_code
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+```
+
+
+*** =sample_code
+```{r}
+# Recreate your plot of the Demcoratic polling data using polls2: dem_plot2
+dem_plot2 <- ggplot(data = subset(___), aes(y = ___, x = ___, col = ___)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(span = 0.5, se = FALSE)
+
+# Create a similar plot for the Republican primaries: rep_plot2
+rep_plot2 <- 
+
+# View both plots together (do not modify this command)
+grid.arrange(dem_plot2, rep_plot2, nrow = 2)
+
+
+```
+
+*** =solution
+```{r}
+# Recreate your plot of the Demcoratic polling data using polls2: dem_plot2
+dem_plot2 <- ggplot(data = subset(polls2, polls2$type == "dem"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(span = 0.5, se = FALSE)
+
+# Create a similar plot for the Republican primaries: rep_plot2
+rep_plot2 <- ggplot(data = subset(polls2, polls2$type == "rep"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.5, se = FALSE, na.rm = TRUE)
+
+# View both plots together (do not modify this command)
+grid.arrange(dem_plot2, rep_plot2, nrow = 2)
+
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("ggplot", args = "object",
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+
+test_object("dem_plot2")
+
+test_object("rep_plot2")
+
+test_error()
+
+success_msg("Excellent! Those plots provide a much better basis for drawing conclusions about the popularity of each candidate.")
+```
+
+
+--- type:NormalExercise lang:r xp:100 skills:1
+## Digging deeper
+
+Your plots look great! Now it's time to take a closer look at your polling data. Did you notice the polls are done at the state level? Rather than averaging across all the states, it might make sense to view polling data state-by-state, especially for the primaries.
+
+In this exercise, you'll compare polling numbers in the Republican primary across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
+
+`polls2`as well as the ``ggplot2` and `gridExtra` package are preloaded into your workspace.
+
+
+*** =instructions
+- Create a plot using `ggplot()` that includes only polling data for Republicans (`type == "rep"`) in the state of Iowa (`location == "IA"`). Save this plot to `ia_plot`.
+- Create a second plot that includes only polling data for Republicans in New Hampshire (`location == "NH"`). Save this plot to `nh_plot`.
+- Create a third plot that includes only polling data for Republicans in South Carolina (`location == "SC"`). Save this plot to `sc_plot`.
+- Take a look at all three plots together using `grid.arrange()`.
+
+
+*** =hint
+- Use `subset(polls2, polls2$type == "rep" & location =="IA")` to select only Republican primary polls in Iowa
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+
+
+*** =pre_exercise_code
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+```
+
+
+*** =sample_code
+```{r}
+# Create a plot that includes only polling data for Republicans in Iowa: ia_plot
+ia_plot <- ggplot(data = subset(___), aes(y = ___, x = ___, col = ___)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="Iowa")
+
+# Create another plot that includes only polling data for Republicans in New Hampshire: nh_plot
+nh_plot <- ggplot(data = subset(___), aes(y = ___, x = ___, col = ___)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="New Hampshire")
+
+# Create another plot that includes only polling data for Republicans in South Carolina: sc_plot
+sc_plot <- ggplot(data = subset(___), aes(y = ___, x = ___, col = ___)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="South Carolina")
+
+# Take a look at all three plots together (do not modify this command)
+grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
+
+
+```
+
+*** =solution
+```{r}
+# Create a plot that includes only polling data for Republicans in Iowa: ia_plot
+ia_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "IA"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="Iowa")
+
+# Create another plot that includes only polling data for Republicans in New Hampshire: nh_plot
+nh_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "NH"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="New Hampshire")
+
+# Create another plot that includes only polling data for Republicans in South Carolina: sc_plot
+sc_plot <- ggplot(data = subset(polls2, polls2$type == "rep" & location == "SC"), aes(y = percent, x = polldate, col = candidate)) +
+  geom_point(alpha = 0.5, na.rm = TRUE) +
+  geom_smooth(span = 0.7, na.rm = TRUE) +
+  labs(title="South Carolina")
+
+# Take a look at all three plots together (do not modify this command)
+grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
+
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("ggplot", args = "object",
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+
+test_object("ia_plot")
+
+test_object("nh_plot")
+
+test_object("sc_plot")
+
+test_error()
+
+success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump had large leads in New Hampshire and South Carolina.")
+```
+
+
+
+
+
