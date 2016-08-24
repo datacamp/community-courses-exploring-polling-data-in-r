@@ -1,33 +1,40 @@
 ---
-title       : Insert the chapter title here
-description : Insert the chapter description here
+title       : Exploring Polling Data in R
+description : Polling data can be an incredibly valuable tool for understanding politics. Polls are a central component of campaign analysis from policy experts, commentators, and even the candidates themselves. This course explores the uses of polling data by examining summary statistics and visualizations of polls from the 2016 Republican and Democratic primaries.
 attachments :
   slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:9245d968f0
-## A really bad movie
+## Reading the polls
 
-Have a look at the plot that showed up in the viewer to the right. Which type of movie has the worst rating assigned to it?
+The first step in working with polling data is understanding what types of conclusions we can derive from the polls. The data in the plot on the right show the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
 *** =instructions
-- Adventure
-- Action
-- Animation
-- Comedy
+- Ted Cruz is unlikely to win a single state.
+- Donald Trump is the most popular candidate nationwide, but may lag behind other candidates in certain states.
+- Donald Trump is likely to win all 50 states.
+- Donald Trump will likely win the General Election against Hillary Clinton in November.
 
 *** =hint
-Have a look at the plot. Which color does the point with the lowest rating have?
+Have a look at the plot. Which candidate appears to be leading?
+
 
 *** =pre_exercise_code
 ```{r}
-# The pre exercise code runs code to initialize the user's workspace.
-# You can use it to load packages, initialize datasets and draw a plot in the viewer
 
-movies <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/introduction_to_r/movies.csv")
-
+polls <- read.csv("polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
 library(ggplot2)
+library(scales)
 
-ggplot(movies, aes(x = runtime, y = rating, col = genre)) + geom_point()
+ggplot(data=subset(polls, type_detail=="Pres-R")) + 
+  geom_jitter(aes(y=percent, x=polldate, col=candidate), alpha=0.3, na.rm=TRUE) + 
+  geom_smooth(aes(y=percent, x=polldate, col=candidate), span=0.5, se=FALSE, alpha=0.7, na.rm=TRUE) + 
+  scale_x_date(breaks = date_breaks("1 month"), labels = date_format("%b %Y")) + 
+  scale_y_continuous(breaks = c(0, 20, 40, 60)) +
+  labs(x="Poll Date", y="")
+
 ```
 
 *** =sct
@@ -35,50 +42,54 @@ ggplot(movies, aes(x = runtime, y = rating, col = genre)) + geom_point()
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
 msg_bad <- "That is not correct!"
-msg_success <- "Exactly! There seems to be a very bad action movie in the dataset."
+msg_success <- "Exactly! Donald Trump maintains a lead throughout these polls, but that doesn't mean he'll win every state."
 test_mc(correct = 2, feedback_msgs = c(msg_bad, msg_success, msg_bad, msg_bad))
 ```
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:c03ca11be3
-## More movies
+## Looking under the hood
 
-In the previous exercise, you saw a dataset about movies. In this exercise, we'll have a look at yet another dataset about movies!
+In the previous exercise, you saw a dataset of polling within the 2016 Republican primaries from January through May of 2016. In this ecercise, we'll take a look at a larger dataset containing polls for Republican and Democratic primaries.
 
-A dataset with a selection of movies, `movie_selection`, is available in the workspace.
+
+A dataset with complete polling data, `polls`, is available in the workspace.
 
 *** =instructions
-- Check out the structure of `movie_selection`.
-- Select movies with a rating of 5 or higher. Assign the result to `good_movies`.
-- Use `plot()` to  plot `good_movies$Run` on the x-axis, `good_movies$Rating` on the y-axis and set `col` to `good_movies$Genre`.
+- Take a look at the structure of `polls`.
+- Select polls for Hillary Clinton in the Democratic primary  (`candidate == "dem`). Assign these polls to `dem_polls`.
+- Use `plot()` to plot `dem_polls$percent` on the x-axis, `dem_polls$polldate` on the y-axis, and set `col` to `dem_polls#candidate`.
+
 
 *** =hint
 - Use `str()` for the first instruction.
-- For the second instruction, you should use `...[movie_selection$Rating >= 5, ]`.
+- For the second instruction, you should use `subset(polls, polls$type= "..."`.
 - For the plot, use `plot(x = ..., y = ..., col = ...)`.
 
 *** =pre_exercise_code
 ```{r}
 # You can also prepare your dataset in a specific way in the pre exercise code
 
-library(MindOnStats)
-data(Movies)
-movie_selection <- Movies[Movies$Genre %in% c("action", "animated", "comedy"),c("Genre", "Rating", "Run")]
+polls <- read.csv("polls.csv")
+polls$polldate <- as.Date(polls$polldate)
+polls$electiondate <- as.Date(polls$electiondate)
+
+
 
 # Clean up the environment
-rm(Movies)
+
 ```
 
 *** =sample_code
 ```{r}
-# movie_selection is available in your workspace
+# polls is available in your workspace
 
-# Check out the structure of movie_selection
-
-
-# Select movies that have a rating of 5 or higher: good_movies
+# Check out the structure of polls
 
 
-# Plot Run (i.e. run time) on the x axis, Rating on the y axis, and set the color using Genre
+# Select polls for the Democratic primaries only: dem_polls
+
+
+# Plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 
 ```
 
@@ -87,13 +98,13 @@ rm(Movies)
 # movie_selection is available in your workspace
 
 # Check out the structure of movie_selection
-str(movie_selection)
+str(polls)
 
 # Select movies that have a rating of 5 or higher: good_movies
-good_movies <- movie_selection[movie_selection$Rating >= 5, ]
+dem_polls <- polls[polls$type == "dem", ]
 
-# Plot Run (i.e. run time) on the x axis, Rating on the y axis, and set the color using Genre
-plot(good_movies$Run, good_movies$Rating, col = good_movies$Genre)
+# Plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+plot(dem_polls$polldate, dem_polls$percent, col = dem_polls$candidate)
 ```
 
 *** =sct
@@ -104,7 +115,7 @@ test_function("str", args = "object",
               not_called_msg = "You didn't call `str()`!",
               incorrect_msg = "You didn't call `str(object = ...)` with the correct argument, `object`.")
 
-test_object("good_movies")
+test_object("dem_polls")
 
 test_function("plot", args = "x")
 test_function("plot", args = "y")
@@ -112,5 +123,5 @@ test_function("plot", args = "col")
 
 test_error()
 
-success_msg("Good work!")
+success_msg("Great work! But that plot looks a little messy. In the next exercise, we'll use `ggplot` to produce a more intuitive plot.")
 ```
