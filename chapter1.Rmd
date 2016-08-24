@@ -373,7 +373,7 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
-## Digging deeper
+## The Fifty-State Strategy
 
 Your plots look great! Now it's time to take a closer look at your polling data. Did you notice the polls are done at the state level? Rather than averaging across all the states, it might make sense to view polling data state-by-state, especially for the primaries.
 
@@ -481,7 +481,7 @@ success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump ha
 
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:9245d968f0
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0d50c40c7f
 ## Stronger Predictions
 
 Now that you've succesfully explored these polling data, you should have a better idea how to read, refine, and visualize large numbers of polls across different units (in this case, states).
