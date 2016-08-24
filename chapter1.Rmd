@@ -475,7 +475,7 @@ Based on your new knowledge of polls, which of the following conclusions can you
 - We can't be sure who will win in Iowa based on these polls.
 
 *** =hint
-Have a look at the plots. Which candidate appears to be leading? What can these data tell us about voting outcomes?
+Have a look at the plots. Which candidate appears to be leading in each state? What can these data tell us about voting outcomes?
 
 
 *** =pre_exercise_code
