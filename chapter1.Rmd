@@ -1,6 +1,7 @@
 ---
 title       : Exploring Polling Data in R
-description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 Republican and Demcoratic primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises ask you to attach polling data to a map of the United States and to generate an interactive map using the googleVis package.
+description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises teach you how to generates maps in R using the map package and the googleVis package.
+
 attachments :
   slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
 
@@ -368,7 +369,7 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
-## The Fifty-State Strategy
+## The fifty-state strategy
 
 Your plots look great! Now it's time to take a closer look at the polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus their effort on winning individual states, rather than maintaining popularity across the country. Instead of averaging across all the states, it might make sense to view polling data state-by-state.
 
@@ -552,8 +553,8 @@ A new dataset containing only the final polling data for Bernie Sanders before e
 - Use ggplot to project Bernie Sanders' polling data onto a map of the United States
 
 *** =hint
-- Be sure to specify `states` and `sanders` as the two data frames for your `merge()` (in that order).
-- Order the `sanders_map` data according to the `order` column (from the `states` data)
+- Be sure to specify `states` and `sanders` as the two data frames for your `merge()` command (in that order)
+- Order the `sanders_map` data according to the `order` column
 
 
 *** =pre_exercise_code
@@ -643,11 +644,11 @@ success_msg("Excellent! It looks like Bernie Sanders was polling very well befor
 
 Your map looks excellent! Attaching polling data to a map of the United States allows for easy and intuitive identification of regional trends for each candidate. 
 
-However, a color gradient alone makes it difficult to identify specific polling numbers from each state. Ideally, you want your map to display general trends as well as specific information about each state. To accomplish this, you'll use googleVis to generate an interactive map from your Bernie Sanders data.
+However, a color gradient alone makes it difficult to identify specific polling numbers from each state. Ideally, you want your map to display general trends and specific information. To accomplish this, you'll use googleVis to generate an interactive map from your Sanders polling data.
 
-The googleVis package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable.
+The `googleVis` package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable.
 
-Your Bernie Sanders polling data (`sanders`) is preloaded into your environment.
+Your Bernie Sanders polling data object (`sanders`) is preloaded into your environment.
 
 *** =instructions
 - Load the `googleVis` package
