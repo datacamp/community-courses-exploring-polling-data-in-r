@@ -199,8 +199,6 @@ test_function("ggplot", args = "data",
               args_not_specified_msg = "Have you specified the argument `data` in `ggplot`?",
               incorrect_msg = "Have you correctly specified the argument `data` in `ggplot`?")
 
-test_object("dem_plot")
-
 test_function("geom_smooth", args = "span")
 test_function("geom_smooth", args = "se")
 
@@ -356,10 +354,6 @@ test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
               incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
 
-test_object("dem_plot2")
-
-test_object("rep_plot2")
-
 test_error()
 
 success_msg("Excellent! Those plots provide a much better basis for drawing conclusions about the popularity of each candidate.")
@@ -461,12 +455,6 @@ grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
               incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
-
-test_object("ia_plot")
-
-test_object("nh_plot")
-
-test_object("sc_plot")
 
 test_error()
 
