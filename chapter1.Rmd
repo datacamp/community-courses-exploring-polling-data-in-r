@@ -659,6 +659,8 @@ Your Bernie Sanders polling data object (`sanders`) is preloaded into your envir
 ```{r}
 sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/sanders.csv")
 
+suppressPackageStartupMessages(library(googleVis))
+
 ```
 
 
@@ -670,8 +672,7 @@ sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/cour
 sanders_gvis <- gvisGeoChart(data = ___, locationvar = , colorvar = ,
                           options=list(region="US", 
                                        displayMode="regions", 
-                                       resolution="provinces",
-                                       width=600, height=400))
+                                       resolution="provinces"))
 
 # Plot your googleVis object
 
@@ -687,8 +688,7 @@ library(googleVis)
 sanders_gvis <- gvisGeoChart(data = sanders, locationvar = "location", colorvar = "percent",
                           options=list(region="US", 
                                        displayMode="regions", 
-                                       resolution="provinces",
-                                       width=600, height=400))
+                                       resolution="provinces"))
 
 # Plot your googleVis object
 plot(sanders_gvis)
@@ -699,9 +699,7 @@ plot(sanders_gvis)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("gvisGeoChart", args = c("data", "locationvar", "colorvar"),
-              not_called_msg = "You didn't call `gvisGeoChart()`!",
-              incorrect_msg = "You didn't call `gvisGeoChart(....)` with the correct arguments")
+test_function("gvisGeoChart")
 
 test_object("sanders_gvis")
 
