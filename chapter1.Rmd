@@ -1,6 +1,6 @@
 ---
 title       : Exploring Polling Data in R
-description : Polling data can be an incredibly valuable tool for understanding politics. Polls are a central component of campaign analysis from policy experts, commentators, and even the candidates themselves. This course explores the uses of polling data by examining summary statistics and visualizations of polls from the 2016 Republican and Democratic primaries.
+description : Polls can be an incredibly valuable tool for understanding politics and are a central component of campaign analysis from policy experts, commentators, and even the candidates themselves. In this course you’ll explore the uses of polling data by examining summary statistics and visualizations of polls from the 2016 Republican and Democratic primaries using base R plots, the ggplot2 package, and the googleVis package.
 attachments :
   slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
 
@@ -86,7 +86,6 @@ polls$electiondate <- as.Date(polls$electiondate)
 
 # Check out the structure of polls
 
-
 # Select polls for the Democratic primaries only: dem_polls
 dem_polls <- 
 
@@ -160,14 +159,12 @@ polls$electiondate <- as.Date(polls$electiondate)
 *** =sample_code
 ```{r}
 # Load the ggplot2 package
-library(ggplot2)
 
 # Create a plot of Democratic candidate support (percent) over time (polldate), setting color to candidate
 dem_plot <- ggplot(data = subset(polls, polls$type == "___"), aes(y = ___, x = ___, col = ___)) + 
   geom_point(alpha = 0.5) 
 
 # View your new plot
-dem_plot
 
 # Add a trend line for each candidate using geom_smooth()
 dem_plot + 
@@ -202,10 +199,6 @@ test_function("ggplot", args = "data",
               incorrect_msg = "Have you correctly specified the argument `data` in `ggplot`?")
 
 test_object("dem_plot")
-
-test_function("ggplot", args = "x")
-test_function("ggplot", args = "y")
-test_function("ggplot", args = "col")
 
 test_function("geom_smooth", args = "span")
 test_function("geom_smooth", args = "se")
@@ -360,9 +353,9 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "data",
+test_function("ggplot", args = c("data", "aes"),
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+              incorrect_msg = "You didn't call `ggplot(data=..., aes())` with the correct arguments")
 
 test_object("dem_plot2")
 
@@ -466,9 +459,9 @@ grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "object",
+test_function("ggplot", args = c("data", "aes"),
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+              incorrect_msg = "You didn't call `ggplot(data=..., aes())` with the correct arguments")
 
 test_object("ia_plot")
 
@@ -484,7 +477,7 @@ success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump ha
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0d50c40c7f
-## Stronger Predictions
+## Stronger predictions
 
 Now that you've explored these polling data, you should have a better idea how to read, refine, and visualize polls across different units (in this case, different primary contests and states).
 
@@ -542,8 +535,8 @@ test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
-## Mapping Polling Data
+--- type:NormalExercise lang:r xp:100 skills:1 key:e7163b7798
+## Mapping polling data
 
 Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
 
@@ -629,15 +622,14 @@ ggplot() +
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "object",
-              not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
 
-test_object("ia_plot")
+test_function("merge", args = c("x", "y"),
+              not_called_msg = "You didn't call `merge()`!",
+              incorrect_msg = "You didn't call `merge( x = ..., y = ...)` with the correct arguments")
 
-test_object("nh_plot")
+test_object("states")
 
-test_object("sc_plot")
+test_object("sanders_map")
 
 test_error()
 
@@ -646,8 +638,8 @@ success_msg("Excellent! It looks like Bernie Sanders was polling very well befor
 
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
-## Interactive Maps Using GoogleVis
+--- type:NormalExercise lang:r xp:100 skills:1 key:341d0fbe4d
+## Interactive maps using googleVis
 
 Your map looks excellent! Attaching polling data to a map of the United States allows for easy and intuitive identification of regional trends for each candidate. 
 
@@ -709,15 +701,11 @@ plot(sanders_gvis)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "object",
-              not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+test_function("gvisGeoChart", args = c("data", "locationvar", "colorvar")
+              not_called_msg = "You didn't call `gvisGeoChart()`!",
+              incorrect_msg = "You didn't call `gvisGeoChart(....)` with the correct arguments")
 
-test_object("ia_plot")
-
-test_object("nh_plot")
-
-test_object("sc_plot")
+test_object("sanders_gvis")
 
 test_error()
 
