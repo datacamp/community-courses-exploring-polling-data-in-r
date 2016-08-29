@@ -356,11 +356,17 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "data",
+test_function("ggplot", args = "data", index = 1,
               not_called_msg = "You didn't call `ggplot()`!",
               incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
 
-test_function("ggplot", args = "mapping")
+test_function("ggplot", args = "mapping", index = 1)
+
+test_function("ggplot", args = "data", index = 2,
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+
+test_function("ggplot", args = "mapping", index = 2)
 
 test_error()
 
@@ -599,7 +605,7 @@ sanders_map <- merge(states, sanders, by = "region", all=T)
 # Reorder Sanders map according to the maps package order column
 sanders_map <- sanders_map[order(sanders_map$order), ]
 
-# Use ggplot to produce a map of Bernie Sanders polling data (don't change this code)
+# Use ggplot to produce a map of Bernie Sanders polling data (do not modify this command)
 ggplot() +
   geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
   labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
