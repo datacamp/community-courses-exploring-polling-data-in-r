@@ -281,8 +281,6 @@ success_msg("Well done! You've removed a key source of inaccuracy in your data. 
 ```
 
 
-
-
 --- type:NormalExercise lang:r xp:100 skills:1 key:ede1dd57e1
 ## Visualizing the refined data
 
@@ -354,9 +352,9 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = c("data", "aes"),
+test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(data=..., aes())` with the correct arguments")
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
 
 test_object("dem_plot2")
 
@@ -460,9 +458,9 @@ grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = c("data", "aes"),
+test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
-              incorrect_msg = "You didn't call `ggplot(data=..., aes())` with the correct arguments")
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
 
 test_object("ia_plot")
 
@@ -623,7 +621,6 @@ ggplot() +
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-
 test_function("merge", args = c("x", "y"),
               not_called_msg = "You didn't call `merge()`!",
               incorrect_msg = "You didn't call `merge( x = ..., y = ...)` with the correct arguments")
@@ -702,7 +699,7 @@ plot(sanders_gvis)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("gvisGeoChart", args = c("data", "locationvar", "colorvar")
+test_function("gvisGeoChart", args = c("data", "locationvar", "colorvar"),
               not_called_msg = "You didn't call `gvisGeoChart()`!",
               incorrect_msg = "You didn't call `gvisGeoChart(....)` with the correct arguments")
 
