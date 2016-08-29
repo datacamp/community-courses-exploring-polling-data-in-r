@@ -275,6 +275,7 @@ polls2 <- polls[polls$samplesize > 400, ]
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
+test_function("hist", args = "x")
 
 test_object("polls2")
 
@@ -358,6 +359,8 @@ grid.arrange(dem_plot2, rep_plot2, nrow = 2)
 test_function("ggplot", args = "data",
               not_called_msg = "You didn't call `ggplot()`!",
               incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+
+test_function("ggplot", args = "mapping")
 
 test_error()
 
