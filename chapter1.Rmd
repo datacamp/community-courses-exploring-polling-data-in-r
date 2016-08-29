@@ -673,6 +673,8 @@ sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/cour
 
 suppressPackageStartupMessages(library(googleVis))
 
+options(gvis.plot.tag = 'chart')
+
 ```
 
 
