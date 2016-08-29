@@ -699,10 +699,6 @@ plot(sanders_gvis)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("gvisGeoChart")
-
-test_object("sanders_gvis")
-
 test_error()
 
 success_msg("Great job! Now that you have an interactive plot, you can get a general overview of trends across the United States as well as specific polling numbers for each state.")
