@@ -377,9 +377,9 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 --- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
 ## The Fifty-State Strategy
 
-Your plots look great! Now it's time to take a closer look at your polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus their effort on winning individual states, rather than maintaining popularity across the country. Rather than averaging across all the states, it might make sense to view polling data state-by-state.
+Your plots look great! Now it's time to take a closer look at the polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus their effort on winning individual states, rather than maintaining popularity across the country. Instead of averaging across all the states, it might make sense to view polling data state-by-state.
 
-In this exercise, you'll compare polling numbers in the Republican primary across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
+In this exercise, you'll compare polls in the Republican primaries across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
 
 `polls2`as well as the `ggplot2` and `gridExtra` packages are preloaded into your workspace.
 
@@ -486,7 +486,7 @@ success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump ha
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0d50c40c7f
 ## Stronger Predictions
 
-Now that you've succesfully explored these polling data, you should have a better idea how to read, refine, and visualize large numbers of polls across different units (in this case, states).
+Now that you've explored these polling data, you should have a better idea how to read, refine, and visualize polls across different units (in this case, different primary contests and states).
 
 Based on your new knowledge of polls, which of the following conclusions can you make from the plots you made in the previous exercise?
 
@@ -534,10 +534,197 @@ grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-msg_bad <- "That's not quite right. Polls alone can't provide that information and even the best polls are just estimates based on public opinion."
+msg_bad <- "That's not quite right. Even the best polls are just estimates based on public opinion."
 msg_success <- "Great job! Remember, even the strongest polls are limited."
 test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 ```
+
+
+
+
+--- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
+## Mapping Polling Data
+
+Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
+
+In this exercise, you'll use the `maps` package to generate a map of candidate support across each state. The `maps` package contains coordinates for a large number of important geographic and political units worldwide which R uses to generate maps. Before you can generate a map of polling data, however, you'll need to merge your polling data with geographic information about each state.
+
+A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. the `ggplot2` package is also preloaded for you.
+
+
+*** =instructions
+- Load the `maps` package to gain access to geographic datsets and save the `states` data
+- Merge `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`
+- Reorder `sanders_map` according to `order` to make sure R knows how to plot your data
+- Use ggplot to project Bernie Sanders' polling data onto a map of the United States
+
+*** =hint
+- Be sure to specify `states` and `sanders` as the two data frames for your `merge()` (in that order).
+- Order the `sanders_map` data according to the `order` column (from the `states` data)
+
+
+*** =pre_exercise_code
+```{r}
+sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/sanders.csv")
+
+library(ggplot2)
+library(ggthemes)
+
+```
+
+
+*** =sample_code
+```{r}
+# Load the maps package and state data
+library(maps)
+states <- map_data("state")
+
+# Merge states and sanders by region: sanders_map
+sanders_map <- merge(___, ___, by = ___, all=T)
+
+# Reorder Sanders map according to the maps package order column
+sanders_map <- ___[order(sanders_map$___ ), ]
+
+# Use ggplot to produce a map of Bernie Sanders polling data (don't change this code)
+ggplot() +
+  geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
+  labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
+  theme(panel.background = element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+*** =solution
+```{r}
+
+# Load the maps package
+library(maps)
+states <- map_data("state")
+
+# Merge states and sanders by region: sanders_map
+sanders_map <- merge(states, sanders, by = "region", all=T)
+
+# Reorder Sanders map according to the maps package order column
+sanders_map <- sanders_map[order(sanders_map$order), ]
+
+# Use ggplot to produce a map of Bernie Sanders polling data (don't change this code)
+ggplot() +
+  geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
+  labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
+  theme(panel.background = element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("ggplot", args = "object",
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+
+test_object("ia_plot")
+
+test_object("nh_plot")
+
+test_object("sc_plot")
+
+test_error()
+
+success_msg("Excellent! It looks like Bernie Sanders was polling very well before the Vermont primary. No surprise there. Sanders' polling numbers across the South are much lower.")
+```
+
+
+
+--- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
+## Interactive Maps Using GoogleVis
+
+Your map looks excellent! Attaching polling data to a map of the United States allows for easy and intuitive identification of regional trends for each candidate. 
+
+However, a color gradient alone makes it difficult to identify specific polling numbers from each state. Ideally, you want your map to display general trends as well as specific information about each state. To accomplish this, you'll use googleVis to generate an interactive map from your Bernie Sanders data.
+
+The googleVis package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable.
+
+Your Bernie Sanders polling data (`sanders`) is preloaded into your environment.
+
+*** =instructions
+- Load the `googleVis` package
+- Generate a googleVis map object (`sanders_gvis`) by specifying `sanders` as the data, setting location to `location`, and setting color to `percent`
+- Plot `sanders_gvis` using the base R plot command
+
+*** =hint
+- The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable. Be sure to use quotes when specifying variables.
+
+*** =pre_exercise_code
+```{r}
+sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/sanders.csv")
+
+```
+
+
+*** =sample_code
+```{r}
+# Load the googleVis package
+
+# Generate a googleVis map object: sanders_gvis
+sanders_gvis <- gvisGeoChart(data = ___, locationvar = , colorvar = ,
+                          options=list(region="US", 
+                                       displayMode="regions", 
+                                       resolution="provinces",
+                                       width=600, height=400))
+
+# Plot your googleVis object
+
+
+```
+
+*** =solution
+```{r}
+# Load the googleVis package
+library(googleVis)
+
+# Generate a googleVis map object: sanders_gvis
+sanders_gvis <- gvisGeoChart(data = sanders, locationvar = "location", colorvar = "percent",
+                          options=list(region="US", 
+                                       displayMode="regions", 
+                                       resolution="provinces",
+                                       width=600, height=400))
+
+# Plot your googleVis object
+plot(sanders_gvis)
+
+```
+
+*** =sct
+```{r}
+# SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("ggplot", args = "object",
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(....)` with the correct argument")
+
+test_object("ia_plot")
+
+test_object("nh_plot")
+
+test_object("sc_plot")
+
+test_error()
+
+success_msg("Great job! Now that you have an interactive plot, you can get a general overview of trends across the United States as well as specific polling numbers for each state.")
+```
+
+
 
 
 
