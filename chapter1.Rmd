@@ -1,6 +1,6 @@
 ---
 title       : Exploring Polling Data in R
-description : Polls can be an incredibly valuable tool for understanding politics and are a central component of campaign analysis from policy experts, commentators, and even the candidates themselves. In this course you’ll explore the uses of polling data by examining summary statistics and visualizations of polls from the 2016 Republican and Democratic primaries using base R plots, the ggplot2 package, and the googleVis package.
+description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 Republican and Demcoratic primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises ask you to attach polling data to a map of the United States and to generate an interactive map using the googleVis package.
 attachments :
   slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
 
@@ -210,7 +210,7 @@ success_msg("Excellent! Your new plot of Democratic primary polls is crisp and e
 
 
 
---- type:NormalExercise lang:r xp:100 skills:1, 3 key:a85763af21
+--- type:NormalExercise lang:r xp:100 skills:1, 3, 8 key:a85763af21
 ## Improving poll data quality
 
 You just made a great plot showing support for Hillary Clinton and Bernie Sanders over the course of the 2016 Democratic primaries. Before you draw any conclusions from this plot, you'll want to address issues of data quality. Even the best polls can suffer from inaccuracy caused by low sample size or pollster bias. 
@@ -282,7 +282,7 @@ success_msg("Well done! You've removed a key source of inaccuracy in your data. 
 
 
 
---- type:NormalExercise lang:r xp:100 skills:1, 3 key:ede1dd57e1
+--- type:NormalExercise lang:r xp:100 skills:1 key:ede1dd57e1
 ## Visualizing the refined data
 
 Now that you've refined your polling data, you're ready to produce more accurate plots In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
