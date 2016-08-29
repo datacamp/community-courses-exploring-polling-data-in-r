@@ -466,9 +466,24 @@ grid.arrange(ia_plot, nh_plot, sc_plot, nrow=3)
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
 
-test_function("ggplot", args = "data",
+test_function("ggplot", args = "data", index = 1,
               not_called_msg = "You didn't call `ggplot()`!",
               incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+
+test_function("ggplot", args = "mapping", index = 1)
+
+test_function("ggplot", args = "data", index = 2,
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+
+test_function("ggplot", args = "mapping", index = 2)
+
+test_function("ggplot", args = "data", index = 3,
+              not_called_msg = "You didn't call `ggplot()`!",
+              incorrect_msg = "You didn't call `ggplot(data=...)` with the correct argument")
+
+test_function("ggplot", args = "mapping", index = 3)
+
 
 test_error()
 
@@ -541,16 +556,16 @@ test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 
 Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
 
-In this exercise, you'll use the `maps` package to generate a map of candidate support across each state. The `maps` package contains coordinates for a large number of important geographic and political units worldwide which R uses to generate maps. Before you can generate a map of polling data, however, you'll need to merge your polling data with geographic information about each state.
+In this exercise, you'll use the `maps` package to generate a map of candidate support across each state. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
 
-A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. the `ggplot2` package is also preloaded for you.
+A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` and `ggthemes` packages, which are also preloaded for you.
 
 
 *** =instructions
 - Load the `maps` package to gain access to geographic datsets and save the `states` data
 - Merge `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`
 - Reorder `sanders_map` according to `order` to make sure R knows how to plot your data
-- Use ggplot to project Bernie Sanders' polling data onto a map of the United States
+- Use `ggplot` to project Bernie Sanders' polling data onto a map of the United States. The `theme_map()` option (from the `ggthemes` package) is a convenient way to produce a crisp and clean map.
 
 *** =hint
 - Be sure to specify `states` and `sanders` as the two data frames for your `merge()` command (in that order)
@@ -583,13 +598,8 @@ sanders_map <- ___[order(sanders_map$___ ), ]
 ggplot() +
   geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
   labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
-  theme(panel.background = element_blank(),
-        axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+  theme_map()
+
 ```
 
 *** =solution
@@ -626,6 +636,8 @@ ggplot() +
 test_function("merge", args = c("x", "y"),
               not_called_msg = "You didn't call `merge()`!",
               incorrect_msg = "You didn't call `merge( x = ..., y = ...)` with the correct arguments")
+
+test_function("ggplot", args = "data")
 
 test_object("states")
 
@@ -700,6 +712,10 @@ plot(sanders_gvis)
 *** =sct
 ```{r}
 # SCT written with testwhat: https://github.com/datacamp/testwhat/wiki
+
+test_function("gvisGeoChart", args = "data")
+test_function("gvisGeoChart", args = "locationvar")
+test_function("gvisGeoChart", args = "colorvar")
 
 test_error()
 
