@@ -637,8 +637,6 @@ test_function("merge", args = c("x", "y"),
               not_called_msg = "You didn't call `merge()`!",
               incorrect_msg = "You didn't call `merge( x = ..., y = ...)` with the correct arguments")
 
-test_function("ggplot", args = "data")
-
 test_object("states")
 
 test_object("sanders_map")
