@@ -161,11 +161,13 @@ polls$electiondate <- as.Date(polls$electiondate)
 ```{r}
 # Load the ggplot2 package
 
+
 # Create a plot of Democratic candidate support (percent) over time (polldate), setting color to candidate
 dem_plot <- ggplot(data = subset(polls, polls$type == "___"), aes(y = ___, x = ___, col = ___)) + 
   geom_point(alpha = 0.5) 
 
 # View your new plot
+
 
 # Add a trend line for each candidate using geom_smooth()
 dem_plot + 
@@ -199,8 +201,13 @@ test_function("ggplot", args = "data",
               args_not_specified_msg = "Have you specified the argument `data` in `ggplot`?",
               incorrect_msg = "Have you correctly specified the argument `data` in `ggplot`?")
 
+test_function("ggplot", args = "aes",
+              args_not_specified_msg = "Have you specified the argument `aes` in `ggplot`?",
+              incorrect_msg = "Have you correctly specified the argument `aes` in `ggplot`?")
+
 test_function("geom_smooth", args = "span")
 test_function("geom_smooth", args = "se")
+
 
 test_error()
 
