@@ -201,9 +201,7 @@ test_function("ggplot", args = "data",
               args_not_specified_msg = "Have you specified the argument `data` in `ggplot`?",
               incorrect_msg = "Have you correctly specified the argument `data` in `ggplot`?")
 
-test_function("ggplot", args = "aes",
-              args_not_specified_msg = "Have you specified the argument `aes` in `ggplot`?",
-              incorrect_msg = "Have you correctly specified the argument `aes` in `ggplot`?")
+test_function("ggplot", args = "mapping")
 
 test_function("geom_smooth", args = "span")
 test_function("geom_smooth", args = "se")
