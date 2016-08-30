@@ -1,7 +1,7 @@
 
 ---
 title       : Exploring Polling Data in R
-description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises teach you how to generate maps in R using the map package and the googleVis package.
+description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises teach you how to generate maps in R using the maps package and the googleVis package.
 
 attachments :
 
