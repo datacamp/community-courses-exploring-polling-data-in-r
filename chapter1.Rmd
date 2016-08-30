@@ -251,7 +251,7 @@ breaks <- seq.int(0, 1300, 100)
 summary(___)
 
 # Create a histogram showing the distribution of polls with a sample size below 1000. Use the vector `breaks` for your histogram breaks.
-
+hist(___[polls$samplesize < 1000], breaks)
 
 # Create a new data frame that contains only polls with a sample size greater than 400: polls2
 polls2 <-
@@ -558,9 +558,9 @@ test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 
 Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
 
-In this exercise, you'll use the [`maps`](http://www.rdocumentation.org/packages/maps/versions/3.1.1) package to generate a map of candidate support across each state. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
+In this exercise, you'll use the [`maps`](http://www.rdocumentation.org/packages/maps/versions/3.1.1) package to generate a map of candidate support across each state in your sample. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
 
-A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` package and the [`ggthemes`](http://www.rdocumentation.org/packages/ggthemes/versions/3.2.0) package, the latter of which provides some useful pre-defined themes for plots made with `ggplot()`. Both packages are also preloaded for you.
+A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` package and the [`ggthemes`](http://www.rdocumentation.org/packages/ggthemes/versions/3.2.0) package, the latter of which provides some useful pre-defined themes for plots made with `ggplot()`. Both packages are preloaded for you.
 
 
 *** =instructions
