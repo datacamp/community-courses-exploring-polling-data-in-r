@@ -11,7 +11,7 @@ attachments :
 
 The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether someone will actually vote).
 
-Even the best polls are only an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you exactly how someone will behave in the voting booth.
+Even the best polls are only an approximation of voter preferences. A poll that was taken three months, three weeks, or even three hours before the election still can't tell you exactly how someone will behave in the voting booth.
 
 The plot on the right shows the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
@@ -92,7 +92,7 @@ polls$electiondate <- as.Date(polls$electiondate)
 # Select polls for the Democratic primaries only: dem_polls
 dem_polls <- subset(polls, polls$type == "___")
 
-# Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+# Using dem_polls, plot polldate on the x-axis, percent (i.e. percent of voters supporting a candidate) on the y-axis, and set the color using candidate
 plot(___, ___, col= ___)
 
 ```
@@ -107,7 +107,7 @@ str(polls)
 # Select polls for the Democratic primaries only: dem_polls
 dem_polls <- subset(polls, polls$type == "dem")
 
-# Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
+# Using dem_polls, plot polldate on the x-axis, percent (i.e. percent of voters supporting a candidate) on the y-axis, and set the color using candidate
 plot(dem_polls$polldate, dem_polls$percent, col = dem_polls$candidate)
 
 ```
@@ -381,7 +381,7 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 
 Your plots look great! Now it's time to take a closer look at the polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus on winning individual states, rather than maintaining popularity across the country. Instead of averaging across all states, it might make sense to view polling data state-by-state.
 
-In this exercise, you'll compare polls in the Republican primaries across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
+In this exercise, you'll compare polls in the Republican primaries across three important early states: Iowa, New Hampshire, and South Carolina. This time, you'll keep the confidence intervals to help see how the candidates compare.
 
 `polls2`as well as the `ggplot2` and `gridExtra` packages are preloaded into your workspace.
 
@@ -564,7 +564,7 @@ A new dataset containing only the final polling data for Bernie Sanders before e
 
 
 *** =instructions
-- Load the `maps` package to gain access to geographic datsets and save the `states` data as an object.
+- Load the `maps` package to gain access to geographic datasets and save the `states` data as an object.
 - Use [merge()](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/merge) to combine `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`.
 - Reorder `sanders_map` according to `order` to make sure R knows how to plot your data.
 - Use `ggplot()` to project Bernie Sanders' polling data onto a map of the United States. The `theme_map()` option (from the `ggthemes` package) is a convenient way to produce a crisp and clean map.
@@ -717,7 +717,6 @@ test_error()
 
 success_msg("Great job! Now that you have an interactive map, you can get a general overview of trends across the United States as well as specific polling numbers for each state.")
 ```
-
 
 
 
