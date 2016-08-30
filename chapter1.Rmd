@@ -136,14 +136,14 @@ success_msg("Great work! Your polling data are accompanied by information about 
 --- type:NormalExercise lang:r xp:100 skills:1 key:b29b654048
 ## Visualizing polling trends
 
-Your previous plot of Democratic primary polls was difficult to interpret because it didn't have a legend and didn't obviously show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on crisp and clear visualizations. In this exercise, you'll use the [`ggplot2`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0) package to produce a more intuitive plot of Democratic primary polls.
+Your previous plot of Democratic primary polls was difficult to interpret because it didn't have a legend and didn't obviously show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on crisp and clear visualizations. In this exercise, you'll use the [ggplot2](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0) package to produce a more intuitive plot of Democratic primary polls.
 
 In this exercise, you'll return to the complete dataset of polls (`polls`), which is preloaded in your workspace.
 
 *** =instructions
-- Recreate your previous plot using the [`ggplot()`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/ggplot). Select only data from Democratic primaries (`pollstype = "dem"`) using `subset()`. Plot `percent` on the y-axis, `polldate` on the x-axis, and set color to `candidate`. Store your plot as `dem_plot`.
+- Recreate your previous plot using the [ggplot()](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/ggplot). Select only data from Democratic primaries (`pollstype = "dem"`) using `subset()`. Plot `percent` on the y-axis, `polldate` on the x-axis, and set color to `candidate`. Store your plot as `dem_plot`.
 - View your new plot.
-- Add a trend line to `dem_plot` using [`geom_smooth()`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/geom_smooth). Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
+- Add a trend line to `dem_plot` using [geom_smooth()](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/geom_smooth). Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
 
 
 *** =hint
@@ -225,7 +225,7 @@ In this exercise, you'll search your polling data for unrepresentative polls and
 `polls` is available in your workspace. 
 
 *** =instructions
-- One common source of inaccuracy in polls is low sample size. Take a look at sample sizes across your data using [`summary()`](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/summary).
+- One common source of inaccuracy in polls is low sample size. Take a look at sample sizes across your data using [summary()](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/summary).
 - Generate a histogram showing the distribution of polls where `samplesize` is less than 1000. A vector of breaks for your histogram (`breaks`) has been prepared for you.
 - Create a new data frame that contains only polls with a sample size greater than 400. Save this as `polls2`.
 
@@ -292,7 +292,7 @@ success_msg("Well done! You've removed a key source of inaccuracy in your data. 
 
 Now that you've refined your polling data, you're ready to produce more accurate plots In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
 
-To view both plots at once, you'll need to use the [`grid.arrange()`](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1/topics/arrangeGrob) command from the [`gridExtra`](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1) package. This command creates a grid which you can fill with plot objects.
+To view both plots at once, you'll need to use the [grid.arrange()](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1/topics/arrangeGrob) command from the [gridExtra](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1) package. This command creates a grid which you can fill with plot objects.
 
 `polls2` is available in your workspace and ``ggplot2`` and `gridExtra` have been preloaded. 
 
@@ -558,14 +558,14 @@ test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 
 Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
 
-In this exercise, you'll use the [`maps`](http://www.rdocumentation.org/packages/maps/versions/3.1.1) package to generate a map of candidate support across each state in your sample. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
+In this exercise, you'll use the [maps](http://www.rdocumentation.org/packages/maps/versions/3.1.1) package to generate a map of candidate support across each state in your sample. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
 
-A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` package and the [`ggthemes`](http://www.rdocumentation.org/packages/ggthemes/versions/3.2.0) package, the latter of which provides some useful pre-defined themes for plots made with `ggplot()`. Both packages are preloaded for you.
+A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` package and the [ggthemes](http://www.rdocumentation.org/packages/ggthemes/versions/3.2.0) package, the latter of which provides some useful pre-defined themes for plots made with `ggplot()`. Both packages are preloaded for you.
 
 
 *** =instructions
 - Load the `maps` package to gain access to geographic datsets and save the `states` data as an object.
-- Use [`merge()`](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/merge) to combine `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`.
+- Use [merge()](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/merge) to combine `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`.
 - Reorder `sanders_map` according to `order` to make sure R knows how to plot your data.
 - Use `ggplot()` to project Bernie Sanders' polling data onto a map of the United States. The `theme_map()` option (from the `ggthemes` package) is a convenient way to produce a crisp and clean map.
 
@@ -649,9 +649,9 @@ success_msg("Excellent! It looks like Bernie Sanders was polling very well befor
 
 Your map looks excellent! Attaching polling data to a map allows for easy and intuitive identification of regional trends for each candidate. 
 
-However, a color gradient alone makes it difficult to identify specific polling numbers in each state. Ideally, you want your map to display general trends and specific information without being too cluttered. To accomplish this, you'll use the [`googleVis`](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0) package to generate an interactive map from your Sanders polling data.
+However, a color gradient alone makes it difficult to identify specific polling numbers in each state. Ideally, you want your map to display general trends and specific information without being too cluttered. To accomplish this, you'll use the [googleVis](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0) package to generate an interactive map from your Sanders polling data.
 
-The `googleVis` package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The [`gvisGeoChart()`](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisGeoChart) command requires you to specify your data, a location variable, and a color variable.
+The `googleVis` package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The [gvisGeoChart()](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisGeoChart) command requires you to specify your data, a location variable, and a color variable.
 
 The Bernie Sanders polling data (`sanders`) is preloaded into your environment.
 
