@@ -1,16 +1,17 @@
+
 ---
 title       : Exploring Polling Data in R
 description : This chapter will show you how to explore, refine, and visualize a sample of polling data from the 2016 primaries. You'll start with simple visualizations using base R commands before proceeding to more complicated plots in the ggplot2 package. The final exercises teach you how to generates maps in R using the map package and the googleVis package.
 
 attachments :
-  slides_link : https://s3.amazonaws.com/assets.datacamp.com/course/teach/slides_example.pdf
+
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:9245d968f0
 ## Reading the polls
 
-The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether or not an individual will actually vote).
+The first step in working with polling data is understanding what types of conclusions we can derive from the polls. Election polls are surveys designed to estimate voter preferences and generally rely on a large, representative sample of a given population. However, polling data can often be biased, unrepresentative of the population, or missing important variables related to election outcomes (for example, whether someone will actually vote).
 
-Even the best polls are just an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you exactly how someone will behave in the voting booth.
+Even the best polls are only an approximation of voter preferences. A poll taken three months, three weeks, or even three hours before the election still can't tell you exactly how someone will behave in the voting booth.
 
 The plot on the right shows the percentage of voters supporting each candidate across all states in the 2016 Republican primaries. Which of the following is a reasonable conclusion to draw from these data?
 
@@ -48,22 +49,22 @@ ggplot(data=subset(polls, type=="rep")) +
 *** =sct
 ```{r}
 
-msg_bad <- "That's not correct! It may be true, but we can't tell from these polls."
-msg_success <- "Exactly! Donald Trump has a lead in most of these polls, but that doesn't mean he'll win every state."
+msg_bad <- "Not quite right! That may be true, but we can't tell from these polls."
+msg_success <- "Exactly! Donald Trump has a lead on average, but that doesn't mean he'll win every state."
 test_mc(correct = 2, feedback_msgs = c(msg_bad, msg_success, msg_bad, msg_bad))
 ```
 
 --- type:NormalExercise lang:r xp:100 skills:1, 3 key:c03ca11be3
 ## Looking under the hood
 
-In the previous exercise, you viewed polling data from the 2016 Republican primaries. In this exercise, you'll take a look at a larger dataset containing polls from both the Republican and Democratic primaries. 
+In the previous exercise, you viewed polling data from the 2016 Republican primaries. In this exercise, you'll take a look at a larger dataset containing a sample of polls from both the Republican and Democratic primaries. 
 
-A dataset with complete primary polling data, `polls`, is available in the workspace.
+A dataset with these data, `polls`, is available in the workspace.
 
 *** =instructions
-- Take a look at the structure of `polls`.
-- Select polls for the Democratic primaries only (`type == "dem`). Assign these polls to `dem_polls`.
-- Use R's baseline plot function, `plot()`, to plot candidate support (`dem_polls$percent`) on the x-axis, the date of the poll (`dem_polls$polldate`) on the y-axis, and give each candidate (`dem_polls#candidate`) their own color.
+- Take a look at the structure of `polls` using `str()`.
+- Select polls for the Democratic primaries only (`type == "dem"`). Assign these polls to `dem_polls`.
+- Use R's base plot function, `plot()`, to plot candidate support (`dem_polls$percent`) on the x-axis, the date of the poll (`dem_polls$polldate`) on the y-axis, and give each candidate (`dem_polls#candidate`) their own color.
 
 
 *** =hint
@@ -87,12 +88,13 @@ polls$electiondate <- as.Date(polls$electiondate)
 
 # Check out the structure of polls
 
+
 # Select polls for the Democratic primaries only: dem_polls
-dem_polls <- 
+dem_polls <- subset(polls, polls$type == "___")
 
 # Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 plot(___, ___, col= ___)
-  
+
 ```
 
 *** =solution
@@ -103,10 +105,11 @@ plot(___, ___, col= ___)
 str(polls)
 
 # Select polls for the Democratic primaries only: dem_polls
-dem_polls <- polls[polls$type == "dem", ]
+dem_polls <- subset(polls, polls$type == "dem")
 
 # Using dem_polls, plot polldate on the x axis, percent (i.e. percent of voters supporting a candidate) on the y axis, and set the color using candidate
 plot(dem_polls$polldate, dem_polls$percent, col = dem_polls$candidate)
+
 ```
 
 *** =sct
@@ -130,24 +133,22 @@ success_msg("Great work! Your polling data are accompanied by information about 
 
 
 
-
-
 --- type:NormalExercise lang:r xp:100 skills:1 key:b29b654048
 ## Visualizing polling trends
 
-Your previous plot of Democratic primary polls was difficult to interpret because it didn't show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on crisp and clear visualizations. In this exercise, you'll use the `ggplot2` package to produce a more intuitive plot of Democratic primary polls.
+Your previous plot of Democratic primary polls was difficult to interpret because it didn't have a legend and didn't obviously show trends over time. To draw conclusions from polling data, analysts (and the general public!) often rely on crisp and clear visualizations. In this exercise, you'll use the [`ggplot2`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0) package to produce a more intuitive plot of Democratic primary polls.
 
-In this exercise, you'll return to the complete dataset of all polls (`polls`), which is preloaded in your workspace.
+In this exercise, you'll return to the complete dataset of polls (`polls`), which is preloaded in your workspace.
 
 *** =instructions
-- Recreate your previous plot using the `ggplot2` package. Select only data from Democratic primaries (this time using `subset()`). Plot `percent` on the y-axis, `polldate` on the x-axis, and set color to `candidate`. Store your plot as `dem_plot`.
-- View your new plot
-- Add a trend line to `dem_plot` using `geom_smooth`. Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
+- Recreate your previous plot using the [`ggplot()`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/ggplot). Select only data from Democratic primaries (`pollstype = "dem"`) using `subset()`. Plot `percent` on the y-axis, `polldate` on the x-axis, and set color to `candidate`. Store your plot as `dem_plot`.
+- View your new plot.
+- Add a trend line to `dem_plot` using [`geom_smooth()`](http://www.rdocumentation.org/packages/ggplot2/versions/2.1.0/topics/geom_smooth). Set the `span` equal to 0.5 and remove confidence intervals (`se = FALSE`).
 
 
 *** =hint
-- Use `subset(polls, polls$type == "dem")` to select only Democratic primaries
-- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+- Use `subset(polls, polls$type == "dem")` to select only Democratic primaries.
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`.
 
 *** =pre_exercise_code
 ```{r}
@@ -172,6 +173,7 @@ dem_plot <- ggplot(data = subset(polls, polls$type == "___"), aes(y = ___, x = _
 # Add a trend line for each candidate using geom_smooth()
 dem_plot + 
   geom_smooth(___)
+
 ```
 
 *** =solution
@@ -213,7 +215,6 @@ success_msg("Excellent! Your new plot of Democratic primary polls is crisp and e
 ```
 
 
-
 --- type:NormalExercise lang:r xp:100 skills:1, 3, 8 key:a85763af21
 ## Improving poll data quality
 
@@ -224,13 +225,13 @@ In this exercise, you'll search your polling data for unrepresentative polls and
 `polls` is available in your workspace. 
 
 *** =instructions
-- One common source of inaccuracy in polls is low sample size. Take a look at sample sizes across your data using `summary()`.
+- One common source of inaccuracy in polls is low sample size. Take a look at sample sizes across your data using [`summary()`](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/summary).
 - Generate a histogram showing the distribution of polls where `samplesize` is less than 1000. A vector of breaks for your histogram (`breaks`) has been prepared for you.
 - Create a new data frame that contains only polls with a sample size greater than 400. Save this as `polls2`.
 
 *** =hint
-- Specify the sample size variable within your `polls` data frame using `polls$samplesize`
-- Include only a subset of your data using `polls[polls$samplesize > ..., ]`
+- Specify the sample size variable within your `polls` data frame using `polls$samplesize`.
+- Include only a subset of your data using `polls[polls$samplesize > ..., ]`.
 
 
 *** =pre_exercise_code
@@ -250,6 +251,7 @@ breaks <- seq.int(0, 1300, 100)
 summary(___)
 
 # Create a histogram showing the distribution of polls with a sample size below 1000. Use the vector `breaks` for your histogram breaks.
+
 
 # Create a new data frame that contains only polls with a sample size greater than 400: polls2
 polls2 <-
@@ -290,18 +292,18 @@ success_msg("Well done! You've removed a key source of inaccuracy in your data. 
 
 Now that you've refined your polling data, you're ready to produce more accurate plots In this exercise, you'll create new plots for the Democratic and Republican primaries using the `ggplot2` package.
 
-To view both plots at once, you'll need to use the `grid.arrange()` command from the `gridExtra` package. This command creates a grid which you can fill with plot objects.
+To view both plots at once, you'll need to use the [`grid.arrange()`](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1/topics/arrangeGrob) command from the [`gridExtra`](http://www.rdocumentation.org/packages/gridExtra/versions/2.2.1) package. This command creates a grid which you can fill with plot objects.
 
 `polls2` is available in your workspace and ``ggplot2`` and `gridExtra` have been preloaded. 
 
 *** =instructions
-- Recreate your plot of the Democratic polling data using `polls2`. Save this plot as `dem_plot2`. Remember to use `subset` and `type == "dem"`.
+- Recreate your plot of the Democratic polling data using `polls2`. Remember to use `subset` with `type == "dem"`, set the y-axis to `percent`, set the x-axis to `polldate`, and set color to `candidate`. Save this plot as `dem_plot2`.
 - Create a similar plot using the Republican polling data contained in `polls2`. Save this plot as `rep_plot2`.
 - View both plots together using `grid.arrange()`.
 
 *** =hint
-- Use `subset(polls2, polls2$type == "dem")` to select only Democratic primaries. Use a similar command for Republican primaries (`rep`).
-- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+- Use `subset(polls2, polls2$type == "dem")` to select only Democratic primaries. Use a similar command for Republican primaries (`type == "rep"`).
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate` in each plot.
 
 
 *** =pre_exercise_code
@@ -377,7 +379,7 @@ success_msg("Excellent! Those plots provide a much better basis for drawing conc
 --- type:NormalExercise lang:r xp:100 skills:1 key:dfbe1e6b60
 ## The fifty-state strategy
 
-Your plots look great! Now it's time to take a closer look at the polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus their effort on winning individual states, rather than maintaining popularity across the country. Instead of averaging across all the states, it might make sense to view polling data state-by-state.
+Your plots look great! Now it's time to take a closer look at the polling data. Did you notice these polls are done at the state level? Especially during the primaries, campaigns tend to focus on winning individual states, rather than maintaining popularity across the country. Instead of averaging across all states, it might make sense to view polling data state-by-state.
 
 In this exercise, you'll compare polls in the Republican primaries across three important early states: Iowa, New Hampshire, and South Carolina. This time you'll keep the confidence intervals to help see how the candidates compare.
 
@@ -385,15 +387,15 @@ In this exercise, you'll compare polls in the Republican primaries across three 
 
 
 *** =instructions
-- Create a plot using `ggplot()` that includes only polling data for Republicans (`type == "rep"`) in the state of Iowa (`location == "IA"`) drawn from the `polls2` data. Save this plot to `ia_plot`.
+- Create a plot using `ggplot()` that includes only polling data for Republicans (`type == "rep"`) in the state of Iowa (`location == "IA"`) drawn from `polls2`. Save this plot to `ia_plot`.
 - Create a second plot that includes only polling data for Republicans in New Hampshire (`location == "NH"`). Save this plot to `nh_plot`.
 - Create a third plot that includes only polling data for Republicans in South Carolina (`location == "SC"`). Save this plot to `sc_plot`.
 - Take a look at all three plots together using `grid.arrange()`.
 
 
 *** =hint
-- Use `subset(polls2, polls2$type == "rep" & location =="IA")` to select only Republican primary polls in Iowa
-- Make sure you set y = `percent`, x = `polldate`, and col = `candidate`
+- Use `subset(polls2, polls2$type == "rep" & location =="IA")` to select only Republican primary polls in Iowa.
+- Make sure you set y = `percent`, x = `polldate`, and col = `candidate` in each plot.
 
 
 *** =pre_exercise_code
@@ -495,16 +497,16 @@ success_msg("Great job! It looks like Iowa was a tight race, but Donald Trump ha
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0d50c40c7f
 ## Stronger predictions
 
-Now that you've explored these polling data, you should have a better idea how to read, refine, and visualize polls across different units (in this case, different primary contests and states).
+Now that you've refined and visualized your polling data, you should have an easier time drawing conclusions from polls across different units (in this case, different parties and states). But be wary - polls are still only an approximation of voter preferences.
 
-Based on your new knowledge of polls, which of the following conclusions can you make from the plots you made in the previous exercise?
+Which of the following conclusions can you make from the plots you constructed in the previous exercise?
 
 
 *** =instructions
 - There is a 100% chance that Donald Trump will win New Hampshire.
 - There was never a chance of Marco Rubio winning in South Carolina.
 - John Kasich will not win in New Hampshire.
-- We can't be sure who will win in Iowa based on these polls.
+- We can't be sure who will win in Iowa.
 
 *** =hint
 Have a look at the plots. Which candidate appears to be leading in each state? What can these data tell us about voting outcomes?
@@ -556,20 +558,20 @@ test_mc(correct = 4, feedback_msgs = c(msg_bad, msg_bad, msg_bad, msg_success))
 
 Now that you've looked at trends in a few important states, you have a good idea of the variation in polling from one state to another. A valuable way to visualize this variation is to attach polling data to a map of the United States. 
 
-In this exercise, you'll use the `maps` package to generate a map of candidate support across each state. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
+In this exercise, you'll use the [`maps`](http://www.rdocumentation.org/packages/maps/versions/3.1.1) package to generate a map of candidate support across each state. The `maps` package contains coordinates for important geographic and political units worldwide which R can use to generate maps. Before you can generate a map from your data, you'll need to merge your polling data with geographic information for each state.
 
-A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` and `ggthemes` packages, which are also preloaded for you.
+A new dataset containing only the final polling data for Bernie Sanders before each state's primary (`sanders`) has been preloaded into your workspace. For plotting purposes, you'll use the `ggplot2` package and the [`ggthemes`](http://www.rdocumentation.org/packages/ggthemes/versions/3.2.0) package, the latter of which provides some useful pre-defined themes for plots made with `ggplot()`. Both packages are also preloaded for you.
 
 
 *** =instructions
-- Load the `maps` package to gain access to geographic datsets and save the `states` data
-- Merge `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`
-- Reorder `sanders_map` according to `order` to make sure R knows how to plot your data
-- Use `ggplot` to project Bernie Sanders' polling data onto a map of the United States. The `theme_map()` option (from the `ggthemes` package) is a convenient way to produce a crisp and clean map.
+- Load the `maps` package to gain access to geographic datsets and save the `states` data as an object.
+- Use [`merge()`](http://www.rdocumentation.org/packages/base/versions/3.3.1/topics/merge) to combine `states` and `sanders` on the column `region`. Save this new data frame as `sanders_map`.
+- Reorder `sanders_map` according to `order` to make sure R knows how to plot your data.
+- Use `ggplot()` to project Bernie Sanders' polling data onto a map of the United States. The `theme_map()` option (from the `ggthemes` package) is a convenient way to produce a crisp and clean map.
 
 *** =hint
-- Be sure to specify `states` and `sanders` as the two data frames for your `merge()` command (in that order)
-- Order the `sanders_map` data according to the `order` column
+- Be sure to specify `states` and `sanders` as the two data frames for your `merge()` command (in that order).
+- Order the `sanders_map` data according to the `order` column.
 
 
 *** =pre_exercise_code
@@ -589,15 +591,15 @@ library(maps)
 states <- map_data("state")
 
 # Merge states and sanders by region: sanders_map
-sanders_map <- merge(___, ___, by = ___, all=T)
+sanders_map <- merge(___, ___, by = ___, all = TRUE)
 
 # Reorder Sanders map according to the maps package order column
 sanders_map <- ___[order(sanders_map$___ ), ]
 
-# Use ggplot to produce a map of Bernie Sanders polling data (don't change this code)
+# Use ggplot() to produce a map of Bernie Sanders polling data (do not modify this command)
 ggplot() +
-  geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
-  labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
+  geom_polygon(data = sanders_map, aes(x = long, y = lat, group = group, fill = percent)) +
+  labs(title = "Support for Bernie Sanders at Last Poll Before Primary") + 
   theme_map()
 
 ```
@@ -610,22 +612,16 @@ library(maps)
 states <- map_data("state")
 
 # Merge states and sanders by region: sanders_map
-sanders_map <- merge(states, sanders, by = "region", all=T)
+sanders_map <- merge(states, sanders, by = "region", all = TRUE)
 
 # Reorder Sanders map according to the maps package order column
 sanders_map <- sanders_map[order(sanders_map$order), ]
 
-# Use ggplot to produce a map of Bernie Sanders polling data (do not modify this command)
+# Use ggplot() to produce a map of Bernie Sanders polling data (do not modify this command)
 ggplot() +
-  geom_polygon(data=sanders_map, aes(x=long, y=lat, group=group, fill=percent)) +
-  labs(title="Support for Bernie Sanders at Last Poll Before Primary") + 
-  theme(panel.background = element_blank(),
-        axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+  geom_polygon(data = sanders_map, aes(x = long, y = lat, group = group, fill = percent)) +
+  labs(title = "Support for Bernie Sanders at Last Poll Before Primary") + 
+  theme_map()
 
 ```
 
@@ -651,18 +647,18 @@ success_msg("Excellent! It looks like Bernie Sanders was polling very well befor
 --- type:NormalExercise lang:r xp:100 skills:1 key:341d0fbe4d
 ## Interactive maps using googleVis
 
-Your map looks excellent! Attaching polling data to a map of the United States allows for easy and intuitive identification of regional trends for each candidate. 
+Your map looks excellent! Attaching polling data to a map allows for easy and intuitive identification of regional trends for each candidate. 
 
-However, a color gradient alone makes it difficult to identify specific polling numbers from each state. Ideally, you want your map to display general trends and specific information. To accomplish this, you'll use googleVis to generate an interactive map from your Sanders polling data.
+However, a color gradient alone makes it difficult to identify specific polling numbers in each state. Ideally, you want your map to display general trends and specific information without being too cluttered. To accomplish this, you'll use the [`googleVis`](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0) package to generate an interactive map from your Sanders polling data.
 
-The `googleVis` package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable.
+The `googleVis` package allows you to create interactive charts and maps in R by providing a direct interface to the Google Charts API. Unlike the `maps` package, maps in `googleVis` do not require you to attach geographic coordinates to your data as long as they contain relevant geographic names (in this case, states). The [`gvisGeoChart()`](http://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisGeoChart) command requires you to specify your data, a location variable, and a color variable.
 
-Your Bernie Sanders polling data object (`sanders`) is preloaded into your environment.
+The Bernie Sanders polling data (`sanders`) is preloaded into your environment.
 
 *** =instructions
-- Load the `googleVis` package
-- Generate a googleVis map object (`sanders_gvis`) by specifying `sanders` as the data, setting location to `location`, and setting color to `percent`
-- Plot `sanders_gvis` using the base R plot command
+- Load the `googleVis` package.
+- Generate a googleVis object (`sanders_gvis`) by specifying `sanders` as the data, setting the location variable to `location`, and setting the color variable to `percent`.
+- Plot `sanders_gvis` using the base R plot command (`plot()`).
 
 *** =hint
 - The `gvisGeoChart()` command requires you to specify data, a location variable, and a color variable. Be sure to use quotes when specifying variables.
@@ -670,10 +666,9 @@ Your Bernie Sanders polling data object (`sanders`) is preloaded into your envir
 *** =pre_exercise_code
 ```{r}
 sanders <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_1635/datasets/sanders.csv")
-
 suppressPackageStartupMessages(library(googleVis))
-
 options(gvis.plot.tag = 'chart')
+
 
 ```
 
@@ -681,6 +676,7 @@ options(gvis.plot.tag = 'chart')
 *** =sample_code
 ```{r}
 # Load the googleVis package
+
 
 # Generate a googleVis map object: sanders_gvis
 sanders_gvis <- gvisGeoChart(data = ___, locationvar = , colorvar = ,
@@ -719,7 +715,7 @@ test_function("gvisGeoChart", args = "colorvar")
 
 test_error()
 
-success_msg("Great job! Now that you have an interactive plot, you can get a general overview of trends across the United States as well as specific polling numbers for each state.")
+success_msg("Great job! Now that you have an interactive map, you can get a general overview of trends across the United States as well as specific polling numbers for each state.")
 ```
 
 
