@@ -64,7 +64,7 @@ A dataset with these data, `polls`, is available in the workspace.
 *** =instructions
 - Take a look at the structure of `polls` using `str()`.
 - Select polls for the Democratic primaries only (`type == "dem"`). Assign these polls to `dem_polls`.
-- Use R's base plot function, `plot()`, to plot candidate support (`dem_polls$percent`) on the x-axis, the date of the poll (`dem_polls$polldate`) on the y-axis, and give each candidate (`dem_polls#candidate`) their own color.
+- Use R's base plot function, `plot()`, to plot the date of the poll (`dem_polls$polldate`) on the x-axis, candidate support (`dem_polls$percent`) on the y-axis, and give each candidate (`dem_polls#candidate`) their own color.
 
 
 *** =hint
