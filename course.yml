@@ -1,6 +1,6 @@
 title            : Exploring Polling Data in R
 author_field     : Matthew Isaacs
-author_bio       : Matthew Isaacs is PhD candidate in Political Science at Brandeis University and a course development intern at DataCamp.
+author_bio       : Matthew Isaacs is a course development intern at DataCamp and a PhD candidate in Political Science at Brandeis University. His research uses time series methods to understand political violence and civil war.
 description      : Polls can be an incredibly valuable tool for understanding politics and are a central component of campaign analysis from policy experts, commentators, and even the candidates themselves. In this course you’ll explore the uses of polling data by examining summary statistics and visualizations of polls from the 2016 Republican and Democratic primaries using base R plots, the ggplot2 package, and the googleVis package.
 university       : DataCamp
 difficulty_level : 2
