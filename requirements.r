@@ -1,0 +1,6 @@
+devtools::install_version("scales", "0.4.1")
+devtools::install_version("ggplot2", "2.2.0")
+devtools::install_version("gridExtra", "2.2.1")
+devtools::install_version("ggthemes", "3.3.0")
+devtools::install_version("maps", "3.1.1")
+devtools::install_version("googleVis", "0.6.1")
