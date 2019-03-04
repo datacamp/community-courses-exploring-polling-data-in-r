@@ -5,4 +5,4 @@ description      : Polls can be an incredibly valuable tool for understanding po
 university       : DataCamp
 difficulty_level : 2
 time_needed      : 1 hour
-from             : 'r-base-prod:27'
+from             : 'r-base-prod:v1.0.2'  
